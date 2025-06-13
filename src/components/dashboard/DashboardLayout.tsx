@@ -16,42 +16,40 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const [isChatOpen, setIsChatOpen] = React.useState(false);
   const pathname = usePathname();
-  
+
   // Determine if this is a coach dashboard
-  const isCoachDashboard = pathname?.includes('/dashboard/coach') || 
-                          pathname?.includes('/dashboard/teams') ||
-                          pathname?.includes('/dashboard/players') ||
-                          pathname?.includes('/dashboard/trainings') ||
-                          pathname?.includes('/dashboard/evaluations');
+  const isCoachDashboard =
+    pathname?.includes("/dashboard/coach") ||
+    pathname?.includes("/dashboard/teams") ||
+    pathname?.includes("/dashboard/players") ||
+    pathname?.includes("/dashboard/trainings") ||
+    pathname?.includes("/dashboard/evaluations");
 
   return (
     <div className={cn("min-h-screen bg-gray-50 flex", className)}>
       {/* Fixed Sidebar */}
-      <Sidebar 
+      <Sidebar
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
         onChatOpen={() => setIsChatOpen(true)}
       />
 
       {/* Main Content Area */}
-      <div className={cn(
-        "flex-1 flex flex-col transition-all duration-300",
-        isCollapsed ? "ml-16" : "ml-64"
-      )}>
+      <div
+        className={cn(
+          "flex-1 flex flex-col transition-all duration-300",
+          isCollapsed ? "ml-16" : "ml-64"
+        )}
+      >
         {/* Fixed Topbar */}
-        <Topbar 
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-        />
+        <Topbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
         {/* Page Content */}
         <main className="flex-1 pt-16 overflow-auto">
-          <div className="p-6">
-            {children}
-          </div>
+          <div className="p-6">{children}</div>
         </main>
       </div>
-      
+
       {/* Chat Sidebar - only show for coach pages */}
       {isCoachDashboard && (
         <ChatSidebar
@@ -60,7 +58,7 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
           currentUser={{
             id: "coach-1",
             name: "Coach Martin",
-            type: "coach"
+            type: "coach",
           }}
         />
       )}

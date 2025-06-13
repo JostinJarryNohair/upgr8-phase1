@@ -5,16 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { 
-  LayoutDashboard, 
-  Users, 
-  UserCheck, 
-  Dumbbell, 
+import {
+  LayoutDashboard,
+  Users,
+  UserCheck,
+  Dumbbell,
   ClipboardCheck,
   Settings,
   HelpCircle,
   MessageCircle,
-  Shield
+  Shield,
 } from "lucide-react";
 
 interface NavItem {
@@ -36,29 +36,45 @@ export function Sidebar({ isCollapsed, className, onChatOpen }: SidebarProps) {
   const pathname = usePathname();
 
   const navItems: NavItem[] = [
-    { name: "Tableau de bord", href: "/dashboard/coach", icon: LayoutDashboard },
+    {
+      name: "Tableau de bord",
+      href: "/dashboard/coach",
+      icon: LayoutDashboard,
+    },
     { name: "Équipes", href: "/dashboard/teams", count: 3, icon: Users },
-    { name: "Joueurs", href: "/dashboard/players", count: 156, icon: UserCheck },
+    {
+      name: "Joueurs",
+      href: "/dashboard/players",
+      count: 156,
+      icon: UserCheck,
+    },
     { name: "Entraînement", href: "/dashboard/trainings", icon: Dumbbell },
-    { name: "Évaluations", href: "/dashboard/evaluations", count: 34, icon: ClipboardCheck },
+    {
+      name: "Évaluations",
+      href: "/dashboard/evaluations",
+      count: 34,
+      icon: ClipboardCheck,
+    },
     { name: "Personnel", href: "/dashboard/staff", icon: Shield },
     { name: "Messages", icon: MessageCircle, count: 2, onClick: onChatOpen },
   ];
 
   return (
-    <div className={cn(
-      "fixed left-0 top-0 z-40 h-screen bg-gradient-to-b from-gray-900 to-gray-800 border-r border-gray-700 shadow-xl transition-all duration-300",
-      isCollapsed ? "w-16" : "w-64",
-      className
-    )}>
+    <div
+      className={cn(
+        "fixed left-0 top-0 z-40 h-screen bg-gradient-to-b from-gray-900 to-gray-800 border-r border-gray-700 shadow-xl transition-all duration-300",
+        isCollapsed ? "w-16" : "w-64",
+        className
+      )}
+    >
       {/* Logo */}
       <div className="h-16 flex items-center justify-center px-6 border-b border-gray-700 bg-gray-800">
         {!isCollapsed ? (
           <div className="bg-white px-4 py-2 rounded-lg">
-            <Image 
-              src="/logo.png" 
-              alt="UpGr8" 
-              width={140} 
+            <Image
+              src="/logo.png"
+              alt="UpGr8"
+              width={140}
               height={48}
               className="w-auto h-8"
             />
@@ -71,25 +87,29 @@ export function Sidebar({ isCollapsed, className, onChatOpen }: SidebarProps) {
         <ul className="space-y-2">
           {navItems.map((item) => {
             const isActive = item.href ? pathname === item.href : false;
-            
+
             const linkContent = (
               <>
                 {isCollapsed && (
                   <item.icon className="w-5 h-5 mx-auto transition-all duration-200" />
                 )}
-                <span className={cn(
-                  "transition-opacity duration-200",
-                  isCollapsed ? "sr-only" : ""
-                )}>
+                <span
+                  className={cn(
+                    "transition-opacity duration-200",
+                    isCollapsed ? "sr-only" : ""
+                  )}
+                >
                   {item.name}
                 </span>
                 {item.count && !isCollapsed && (
-                  <span className={cn(
-                    "ml-auto text-xs px-2 py-1 rounded-full transition-colors",
-                    isActive 
-                      ? "bg-white/20 text-white" 
-                      : "bg-gray-700 text-gray-300 group-hover:bg-gray-600"
-                  )}>
+                  <span
+                    className={cn(
+                      "ml-auto text-xs px-2 py-1 rounded-full transition-colors",
+                      isActive
+                        ? "bg-white/20 text-white"
+                        : "bg-gray-700 text-gray-300 group-hover:bg-gray-600"
+                    )}
+                  >
                     {item.count}
                   </span>
                 )}
@@ -119,7 +139,7 @@ export function Sidebar({ isCollapsed, className, onChatOpen }: SidebarProps) {
 
             return (
               <li key={item.name}>
-                <Link 
+                <Link
                   href={item.href!}
                   className={cn(
                     "group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:bg-gray-700/50 relative",
@@ -154,7 +174,7 @@ export function Sidebar({ isCollapsed, className, onChatOpen }: SidebarProps) {
         )}
 
         <div className="space-y-2">
-          <Link 
+          <Link
             href="/dashboard/settings"
             className={cn(
               "group flex items-center px-3 py-2 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700/50 hover:text-white transition-all duration-200 relative",
@@ -171,7 +191,7 @@ export function Sidebar({ isCollapsed, className, onChatOpen }: SidebarProps) {
               </span>
             )}
           </Link>
-          <Link 
+          <Link
             href="/help"
             className={cn(
               "group flex items-center px-3 py-2 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700/50 hover:text-white transition-all duration-200 relative",
