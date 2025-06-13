@@ -30,31 +30,53 @@ const mockEvaluations: PlayerEvaluation[] = [
     playerName: "Emma Gagnon",
     playerNumber: 31,
     position: "G",
-    skills: { skating: 8, shooting: 6, passing: 7, defense: 9, gameIQ: 8, attitude: 9 },
-    comments: "Excellente gardienne, très réactive. Doit améliorer la sortie de zone.",
+    skills: {
+      skating: 8,
+      shooting: 6,
+      passing: 7,
+      defense: 9,
+      gameIQ: 8,
+      attitude: 9,
+    },
+    comments:
+      "Excellente gardienne, très réactive. Doit améliorer la sortie de zone.",
     evaluatedBy: "Coach Martin",
-    date: new Date("2024-01-15")
+    date: new Date("2024-01-15"),
   },
   {
-    id: "eval-2", 
+    id: "eval-2",
     playerName: "Marc Tremblay",
     playerNumber: 24,
     position: "LW",
-    skills: { skating: 7, shooting: 8, passing: 6, defense: 5, gameIQ: 7, attitude: 8 },
+    skills: {
+      skating: 7,
+      shooting: 8,
+      passing: 6,
+      defense: 5,
+      gameIQ: 7,
+      attitude: 8,
+    },
     comments: "Bon tireur, patinage à améliorer. Très motivé à l'entraînement.",
     evaluatedBy: "Coach Sarah",
-    date: new Date("2024-01-14")
+    date: new Date("2024-01-14"),
   },
   {
     id: "eval-3",
-    playerName: "Sophie Lavoie", 
+    playerName: "Sophie Lavoie",
     playerNumber: 7,
     position: "D",
-    skills: { skating: 8, shooting: 5, passing: 8, defense: 9, gameIQ: 8, attitude: 9 },
+    skills: {
+      skating: 8,
+      shooting: 5,
+      passing: 8,
+      defense: 9,
+      gameIQ: 8,
+      attitude: 9,
+    },
     comments: "Défenseuse solide, excellente vision de jeu. Continue comme ça.",
     evaluatedBy: "Coach Martin",
-    date: new Date("2024-01-13")
-  }
+    date: new Date("2024-01-13"),
+  },
 ];
 
 // Mock players data
@@ -74,66 +96,308 @@ const mockPlayers = [
   { id: "p10", name: "Noah Gagnon", number: 21, position: "G", category: "U7" },
 
   // U9 Players
-  { id: "p11", name: "Félix Boucher", number: 4, position: "C", category: "U9" },
-  { id: "p12", name: "Jade Pelletier", number: 9, position: "LW", category: "U9" },
-  { id: "p13", name: "William Côté", number: 13, position: "D", category: "U9" },
-  { id: "p14", name: "Chloé Lavoie", number: 16, position: "RW", category: "U9" },
-  { id: "p15", name: "Antoine Morin", number: 20, position: "G", category: "U9" },
+  {
+    id: "p11",
+    name: "Félix Boucher",
+    number: 4,
+    position: "C",
+    category: "U9",
+  },
+  {
+    id: "p12",
+    name: "Jade Pelletier",
+    number: 9,
+    position: "LW",
+    category: "U9",
+  },
+  {
+    id: "p13",
+    name: "William Côté",
+    number: 13,
+    position: "D",
+    category: "U9",
+  },
+  {
+    id: "p14",
+    name: "Chloé Lavoie",
+    number: 16,
+    position: "RW",
+    category: "U9",
+  },
+  {
+    id: "p15",
+    name: "Antoine Morin",
+    number: 20,
+    position: "G",
+    category: "U9",
+  },
 
   // U11 Players
-  { id: "p16", name: "Gabriel Fortin", number: 6, position: "C", category: "U11" },
-  { id: "p17", name: "Camille Bouchard", number: 10, position: "LW", category: "U11" },
+  {
+    id: "p16",
+    name: "Gabriel Fortin",
+    number: 6,
+    position: "C",
+    category: "U11",
+  },
+  {
+    id: "p17",
+    name: "Camille Bouchard",
+    number: 10,
+    position: "LW",
+    category: "U11",
+  },
   { id: "p18", name: "Mathis Roy", number: 14, position: "D", category: "U11" },
-  { id: "p19", name: "Léa Gagnon", number: 18, position: "RW", category: "U11" },
-  { id: "p20", name: "Raphaël Martin", number: 25, position: "G", category: "U11" },
+  {
+    id: "p19",
+    name: "Léa Gagnon",
+    number: 18,
+    position: "RW",
+    category: "U11",
+  },
+  {
+    id: "p20",
+    name: "Raphaël Martin",
+    number: 25,
+    position: "G",
+    category: "U11",
+  },
 
   // U13 Players
-  { id: "p21", name: "Justin Tremblay", number: 8, position: "C", category: "U13" },
-  { id: "p22", name: "Océane Dubois", number: 11, position: "LW", category: "U13" },
-  { id: "p23", name: "Samuel Côté", number: 17, position: "D", category: "U13" },
-  { id: "p24", name: "Maëlle Boucher", number: 19, position: "RW", category: "U13" },
-  { id: "p25", name: "Étienne Pelletier", number: 30, position: "G", category: "U13" },
-  
+  {
+    id: "p21",
+    name: "Justin Tremblay",
+    number: 8,
+    position: "C",
+    category: "U13",
+  },
+  {
+    id: "p22",
+    name: "Océane Dubois",
+    number: 11,
+    position: "LW",
+    category: "U13",
+  },
+  {
+    id: "p23",
+    name: "Samuel Côté",
+    number: 17,
+    position: "D",
+    category: "U13",
+  },
+  {
+    id: "p24",
+    name: "Maëlle Boucher",
+    number: 19,
+    position: "RW",
+    category: "U13",
+  },
+  {
+    id: "p25",
+    name: "Étienne Pelletier",
+    number: 30,
+    position: "G",
+    category: "U13",
+  },
+
   // U15 Players
-  { id: "p26", name: "Emma Gagnon", number: 31, position: "G", category: "U15" },
-  { id: "p27", name: "Marc Tremblay", number: 24, position: "LW", category: "U15" },
-  { id: "p28", name: "Sophie Lavoie", number: 7, position: "D", category: "U15" },
-  { id: "p29", name: "Thomas Roy", number: 15, position: "RW", category: "U15" },
-  { id: "p30", name: "Gabriel Morin", number: 12, position: "C", category: "U15" },
-  { id: "p31", name: "Maya Boucher", number: 19, position: "LW", category: "U15" },
+  {
+    id: "p26",
+    name: "Emma Gagnon",
+    number: 31,
+    position: "G",
+    category: "U15",
+  },
+  {
+    id: "p27",
+    name: "Marc Tremblay",
+    number: 24,
+    position: "LW",
+    category: "U15",
+  },
+  {
+    id: "p28",
+    name: "Sophie Lavoie",
+    number: 7,
+    position: "D",
+    category: "U15",
+  },
+  {
+    id: "p29",
+    name: "Thomas Roy",
+    number: 15,
+    position: "RW",
+    category: "U15",
+  },
+  {
+    id: "p30",
+    name: "Gabriel Morin",
+    number: 12,
+    position: "C",
+    category: "U15",
+  },
+  {
+    id: "p31",
+    name: "Maya Boucher",
+    number: 19,
+    position: "LW",
+    category: "U15",
+  },
   { id: "p32", name: "Nathan Côté", number: 5, position: "D", category: "U15" },
-  
+
   // U18 Players
-  { id: "p33", name: "Simon Pelletier", number: 9, position: "C", category: "U18" },
-  { id: "p34", name: "Jade Fortin", number: 17, position: "RW", category: "U18" },
-  { id: "p35", name: "Olivier Bouchard", number: 23, position: "D", category: "U18" },
-  { id: "p36", name: "Camille Gagnon", number: 22, position: "LW", category: "U18" },
-  { id: "p37", name: "Vincent Moreau", number: 1, position: "G", category: "U18" },
+  {
+    id: "p33",
+    name: "Simon Pelletier",
+    number: 9,
+    position: "C",
+    category: "U18",
+  },
+  {
+    id: "p34",
+    name: "Jade Fortin",
+    number: 17,
+    position: "RW",
+    category: "U18",
+  },
+  {
+    id: "p35",
+    name: "Olivier Bouchard",
+    number: 23,
+    position: "D",
+    category: "U18",
+  },
+  {
+    id: "p36",
+    name: "Camille Gagnon",
+    number: 22,
+    position: "LW",
+    category: "U18",
+  },
+  {
+    id: "p37",
+    name: "Vincent Moreau",
+    number: 1,
+    position: "G",
+    category: "U18",
+  },
 
   // Junior Players
-  { id: "p38", name: "Alexandre Dumont", number: 27, position: "C", category: "Junior" },
-  { id: "p39", name: "Sarah Leblanc", number: 18, position: "LW", category: "Junior" },
-  { id: "p40", name: "Maxime Gauthier", number: 4, position: "D", category: "Junior" },
-  { id: "p41", name: "Jessica Caron", number: 26, position: "RW", category: "Junior" },
-  { id: "p42", name: "Kevin Bergeron", number: 35, position: "G", category: "Junior" },
-  { id: "p43", name: "Émilie Rousseau", number: 13, position: "C", category: "Junior" },
-  { id: "p44", name: "Jonathan Mercier", number: 21, position: "D", category: "Junior" },
+  {
+    id: "p38",
+    name: "Alexandre Dumont",
+    number: 27,
+    position: "C",
+    category: "Junior",
+  },
+  {
+    id: "p39",
+    name: "Sarah Leblanc",
+    number: 18,
+    position: "LW",
+    category: "Junior",
+  },
+  {
+    id: "p40",
+    name: "Maxime Gauthier",
+    number: 4,
+    position: "D",
+    category: "Junior",
+  },
+  {
+    id: "p41",
+    name: "Jessica Caron",
+    number: 26,
+    position: "RW",
+    category: "Junior",
+  },
+  {
+    id: "p42",
+    name: "Kevin Bergeron",
+    number: 35,
+    position: "G",
+    category: "Junior",
+  },
+  {
+    id: "p43",
+    name: "Émilie Rousseau",
+    number: 13,
+    position: "C",
+    category: "Junior",
+  },
+  {
+    id: "p44",
+    name: "Jonathan Mercier",
+    number: 21,
+    position: "D",
+    category: "Junior",
+  },
 
   // Senior Players
-  { id: "p45", name: "Patrick Bélanger", number: 16, position: "C", category: "Senior" },
-  { id: "p46", name: "Caroline Desjardins", number: 28, position: "LW", category: "Senior" },
-  { id: "p47", name: "Daniel Girard", number: 6, position: "D", category: "Senior" },
-  { id: "p48", name: "Marie-Claude Hébert", number: 14, position: "RW", category: "Senior" },
-  { id: "p49", name: "François Leclerc", number: 33, position: "G", category: "Senior" },
-  { id: "p50", name: "Nathalie Poirier", number: 29, position: "C", category: "Senior" },
-  { id: "p51", name: "Stéphane Thibault", number: 8, position: "D", category: "Senior" },
-  { id: "p52", name: "Isabelle Lafond", number: 25, position: "LW", category: "Senior" }
+  {
+    id: "p45",
+    name: "Patrick Bélanger",
+    number: 16,
+    position: "C",
+    category: "Senior",
+  },
+  {
+    id: "p46",
+    name: "Caroline Desjardins",
+    number: 28,
+    position: "LW",
+    category: "Senior",
+  },
+  {
+    id: "p47",
+    name: "Daniel Girard",
+    number: 6,
+    position: "D",
+    category: "Senior",
+  },
+  {
+    id: "p48",
+    name: "Marie-Claude Hébert",
+    number: 14,
+    position: "RW",
+    category: "Senior",
+  },
+  {
+    id: "p49",
+    name: "François Leclerc",
+    number: 33,
+    position: "G",
+    category: "Senior",
+  },
+  {
+    id: "p50",
+    name: "Nathalie Poirier",
+    number: 29,
+    position: "C",
+    category: "Senior",
+  },
+  {
+    id: "p51",
+    name: "Stéphane Thibault",
+    number: 8,
+    position: "D",
+    category: "Senior",
+  },
+  {
+    id: "p52",
+    name: "Isabelle Lafond",
+    number: 25,
+    position: "LW",
+    category: "Senior",
+  },
 ];
 
 export default function EvaluationsPage() {
-  const [selectedPlayer, setSelectedPlayer] = React.useState<PlayerEvaluation | null>(null);
+  const [selectedPlayer, setSelectedPlayer] =
+    React.useState<PlayerEvaluation | null>(null);
   const [showNewEvalModal, setShowNewEvalModal] = React.useState(false);
-  const [evaluations, setEvaluations] = React.useState<PlayerEvaluation[]>(mockEvaluations);
+  const [evaluations, setEvaluations] =
+    React.useState<PlayerEvaluation[]>(mockEvaluations);
   const [newEvaluation, setNewEvaluation] = React.useState({
     playerName: "",
     playerNumber: "",
@@ -144,10 +408,10 @@ export default function EvaluationsPage() {
       passing: 5,
       defense: 5,
       gameIQ: 5,
-      attitude: 5
+      attitude: 5,
     },
     comments: "",
-    evaluatedBy: "Coach Martin"
+    evaluatedBy: "Coach Martin",
   });
   const [selectedCategory, setSelectedCategory] = React.useState("U15");
   const [selectedPlayerId, setSelectedPlayerId] = React.useState("");
@@ -158,19 +422,19 @@ export default function EvaluationsPage() {
     return "text-red-700 bg-red-red-50";
   };
 
-  const calculateAverage = (skills: PlayerEvaluation['skills']) => {
+  const calculateAverage = (skills: PlayerEvaluation["skills"]) => {
     const values = Object.values(skills);
     return (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
   };
 
   const handlePlayerSelect = (playerId: string) => {
-    const player = mockPlayers.find(p => p.id === playerId);
+    const player = mockPlayers.find((p) => p.id === playerId);
     if (player) {
-      setNewEvaluation(prev => ({
+      setNewEvaluation((prev) => ({
         ...prev,
         playerName: player.name,
         playerNumber: player.number.toString(),
-        position: player.position
+        position: player.position,
       }));
       setSelectedPlayerId(playerId);
     }
@@ -179,15 +443,17 @@ export default function EvaluationsPage() {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setSelectedPlayerId("");
-    setNewEvaluation(prev => ({
+    setNewEvaluation((prev) => ({
       ...prev,
       playerName: "",
       playerNumber: "",
-      position: ""
+      position: "",
     }));
   };
 
-  const filteredPlayers = mockPlayers.filter(player => player.category === selectedCategory);
+  const filteredPlayers = mockPlayers.filter(
+    (player) => player.category === selectedCategory
+  );
 
   const handleNewEvaluation = () => {
     if (!selectedPlayerId) return;
@@ -201,23 +467,30 @@ export default function EvaluationsPage() {
       skills: newEvaluation.skills,
       comments: newEvaluation.comments,
       evaluatedBy: newEvaluation.evaluatedBy,
-      date: new Date()
+      date: new Date(),
     };
 
     // Ajouter à la liste des évaluations
-    setEvaluations(prev => [newPlayerEvaluation, ...prev]);
+    setEvaluations((prev) => [newPlayerEvaluation, ...prev]);
 
     console.log("Nouvelle évaluation:", newPlayerEvaluation);
     setShowNewEvalModal(false);
-    
+
     // Reset form
     setNewEvaluation({
       playerName: "",
       playerNumber: "",
       position: "",
-      skills: { skating: 5, shooting: 5, passing: 5, defense: 5, gameIQ: 5, attitude: 5 },
+      skills: {
+        skating: 5,
+        shooting: 5,
+        passing: 5,
+        defense: 5,
+        gameIQ: 5,
+        attitude: 5,
+      },
       comments: "",
-      evaluatedBy: "Coach Martin"
+      evaluatedBy: "Coach Martin",
     });
     setSelectedCategory("U15");
     setSelectedPlayerId("");
@@ -227,11 +500,14 @@ export default function EvaluationsPage() {
   const recentEvaluations = evaluations.slice(0, 7);
 
   // Filtrer les évaluations de cette saison (2024-2025)
-  const thisSeasonEvaluations = evaluations.filter(evaluation => {
+  const thisSeasonEvaluations = evaluations.filter((evaluation) => {
     const evalYear = evaluation.date.getFullYear();
     const evalMonth = evaluation.date.getMonth();
     // Saison 2024-25: Septembre 2024 à Août 2025
-    return (evalYear === 2024 && evalMonth >= 8) || (evalYear === 2025 && evalMonth < 8);
+    return (
+      (evalYear === 2024 && evalMonth >= 8) ||
+      (evalYear === 2025 && evalMonth < 8)
+    );
   });
 
   return (
@@ -239,10 +515,12 @@ export default function EvaluationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-medium text-gray-900">Évaluations</h1>
-          <p className="text-sm text-gray-600">Toutes catégories - Saison 2024</p>
+          <p className="text-sm text-gray-600">
+            Toutes catégories - Saison 2024
+          </p>
         </div>
-        <Button 
-          size="sm" 
+        <Button
+          size="sm"
           className="text-sm bg-red-600 hover:bg-red-700"
           onClick={() => setShowNewEvalModal(true)}
         >
@@ -267,7 +545,9 @@ export default function EvaluationsPage() {
                 key={evaluation.id}
                 onClick={() => setSelectedPlayer(evaluation)}
                 className={`p-4 cursor-pointer hover:bg-gray-50 ${
-                  selectedPlayer?.id === evaluation.id ? 'bg-red-50 border-l-4 border-red-500' : ''
+                  selectedPlayer?.id === evaluation.id
+                    ? "bg-red-50 border-l-4 border-red-500"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -276,11 +556,15 @@ export default function EvaluationsPage() {
                       {evaluation.playerNumber}
                     </div>
                     <div>
-                      <h3 className="text-base font-medium text-gray-900">{evaluation.playerName}</h3>
+                      <h3 className="text-base font-medium text-gray-900">
+                        {evaluation.playerName}
+                      </h3>
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <span>{evaluation.position}</span>
                         <span>•</span>
-                        <span>{evaluation.date.toLocaleDateString('fr-CA')}</span>
+                        <span>
+                          {evaluation.date.toLocaleDateString("fr-CA")}
+                        </span>
                         <span>•</span>
                         <span>{evaluation.evaluatedBy}</span>
                       </div>
@@ -298,7 +582,9 @@ export default function EvaluationsPage() {
           ) : (
             <div className="p-8 text-center text-gray-500">
               <p className="text-sm">Aucune évaluation pour cette saison</p>
-              <p className="text-xs mt-1">Les évaluations apparaîtront ici une fois créées</p>
+              <p className="text-xs mt-1">
+                Les évaluations apparaîtront ici une fois créées
+              </p>
             </div>
           )}
         </div>
@@ -318,7 +604,9 @@ export default function EvaluationsPage() {
                 key={evaluation.id}
                 onClick={() => setSelectedPlayer(evaluation)}
                 className={`p-4 cursor-pointer hover:bg-gray-50 ${
-                  selectedPlayer?.id === evaluation.id ? 'bg-blue-50 border-l-4 border-blue-500' : ''
+                  selectedPlayer?.id === evaluation.id
+                    ? "bg-blue-50 border-l-4 border-blue-500"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -327,11 +615,15 @@ export default function EvaluationsPage() {
                       {evaluation.playerNumber}
                     </div>
                     <div>
-                      <h3 className="text-base font-medium text-gray-900">{evaluation.playerName}</h3>
+                      <h3 className="text-base font-medium text-gray-900">
+                        {evaluation.playerName}
+                      </h3>
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <span>{evaluation.position}</span>
                         <span>•</span>
-                        <span>{evaluation.date.toLocaleDateString('fr-CA')}</span>
+                        <span>
+                          {evaluation.date.toLocaleDateString("fr-CA")}
+                        </span>
                         <span>•</span>
                         <span>{evaluation.evaluatedBy}</span>
                       </div>
@@ -346,11 +638,13 @@ export default function EvaluationsPage() {
                 </div>
               </div>
             ))}
-            
+
             {recentEvaluations.length === 0 && (
               <div className="p-8 text-center text-gray-500">
                 <p className="text-sm">Aucune évaluation disponible</p>
-                <p className="text-xs mt-1">Commencez par créer une nouvelle évaluation</p>
+                <p className="text-xs mt-1">
+                  Commencez par créer une nouvelle évaluation
+                </p>
               </div>
             )}
           </div>
@@ -371,47 +665,72 @@ export default function EvaluationsPage() {
                       {selectedPlayer.playerNumber}
                     </div>
                     <div>
-                      <h3 className="text-base font-medium text-gray-900">{selectedPlayer.playerName}</h3>
-                      <p className="text-sm text-gray-600">{selectedPlayer.position}</p>
+                      <h3 className="text-base font-medium text-gray-900">
+                        {selectedPlayer.playerName}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {selectedPlayer.position}
+                      </p>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500">
-                    Évalué par {selectedPlayer.evaluatedBy} le {selectedPlayer.date.toLocaleDateString('fr-CA')}
+                    Évalué par {selectedPlayer.evaluatedBy} le{" "}
+                    {selectedPlayer.date.toLocaleDateString("fr-CA")}
                   </div>
                 </div>
 
                 {/* Compétences */}
                 <div>
-                  <h4 className="text-base font-medium text-gray-900 mb-3">Compétences</h4>
+                  <h4 className="text-base font-medium text-gray-900 mb-3">
+                    Compétences
+                  </h4>
                   <div className="space-y-3">
-                    {Object.entries(selectedPlayer.skills).map(([skill, score]) => (
-                      <div key={skill} className="flex items-center justify-between">
-                        <span className="text-sm text-gray-700 capitalize">
-                          {skill === 'gameIQ' ? 'Vision de jeu' : 
-                           skill === 'skating' ? 'Patinage' :
-                           skill === 'shooting' ? 'Tir' :
-                           skill === 'passing' ? 'Passes' :
-                           skill === 'defense' ? 'Défense' :
-                           skill === 'attitude' ? 'Attitude' : skill}
-                        </span>
-                        <div className="flex items-center gap-3">
-                          <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div 
-                              className="h-full bg-blue-500 transition-all duration-300"
-                              style={{ width: `${score * 10}%` }}
-                            />
-                          </div>
-                          <span className={`text-sm px-2 py-1 rounded ${getSkillColor(score)}`}>
-                            {score}/10
+                    {Object.entries(selectedPlayer.skills).map(
+                      ([skill, score]) => (
+                        <div
+                          key={skill}
+                          className="flex items-center justify-between"
+                        >
+                          <span className="text-sm text-gray-700 capitalize">
+                            {skill === "gameIQ"
+                              ? "Vision de jeu"
+                              : skill === "skating"
+                              ? "Patinage"
+                              : skill === "shooting"
+                              ? "Tir"
+                              : skill === "passing"
+                              ? "Passes"
+                              : skill === "defense"
+                              ? "Défense"
+                              : skill === "attitude"
+                              ? "Attitude"
+                              : skill}
                           </span>
+                          <div className="flex items-center gap-3">
+                            <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-blue-500 transition-all duration-300"
+                                style={{ width: `${score * 10}%` }}
+                              />
+                            </div>
+                            <span
+                              className={`text-sm px-2 py-1 rounded ${getSkillColor(
+                                score
+                              )}`}
+                            >
+                              {score}/10
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
-                  
+
                   <div className="mt-4 p-3 bg-gray-50 rounded">
                     <div className="flex items-center justify-between">
-                      <span className="text-base font-medium text-gray-900">Moyenne générale</span>
+                      <span className="text-base font-medium text-gray-900">
+                        Moyenne générale
+                      </span>
                       <span className="text-base font-bold text-blue-600">
                         {calculateAverage(selectedPlayer.skills)}/10
                       </span>
@@ -421,7 +740,9 @@ export default function EvaluationsPage() {
 
                 {/* Commentaires */}
                 <div>
-                  <h4 className="text-base font-medium text-gray-900 mb-3">Commentaires</h4>
+                  <h4 className="text-base font-medium text-gray-900 mb-3">
+                    Commentaires
+                  </h4>
                   <div className="p-3 bg-gray-50 rounded text-sm text-gray-700 leading-relaxed">
                     {selectedPlayer.comments}
                   </div>
@@ -429,7 +750,11 @@ export default function EvaluationsPage() {
 
                 {/* Actions */}
                 <div className="flex gap-2 pt-3">
-                  <Button variant="outline" size="sm" className="text-sm flex-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-sm flex-1"
+                  >
                     Modifier
                   </Button>
                   <Button variant="outline" size="sm" className="text-sm">
@@ -440,7 +765,9 @@ export default function EvaluationsPage() {
             ) : (
               <div className="text-center py-10">
                 <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4"></div>
-                <p className="text-base text-gray-500">Sélectionnez une évaluation</p>
+                <p className="text-base text-gray-500">
+                  Sélectionnez une évaluation
+                </p>
               </div>
             )}
           </div>
@@ -450,34 +777,51 @@ export default function EvaluationsPage() {
       {/* Statistiques rapides */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-white border rounded-lg p-4 text-center">
-          <div className="text-xl font-bold text-gray-900">{evaluations.length}</div>
+          <div className="text-xl font-bold text-gray-900">
+            {evaluations.length}
+          </div>
           <div className="text-sm text-gray-600">Total Évaluations</div>
         </div>
         <div className="bg-white border rounded-lg p-4 text-center">
-          <div className="text-xl font-bold text-red-600">{thisSeasonEvaluations.length}</div>
+          <div className="text-xl font-bold text-red-600">
+            {thisSeasonEvaluations.length}
+          </div>
           <div className="text-sm text-gray-600">Cette saison</div>
         </div>
         <div className="bg-white border rounded-lg p-4 text-center">
           <div className="text-xl font-bold text-gray-900">
-            {evaluations.length > 0 
-              ? (evaluations.reduce((acc, evaluation) => acc + parseFloat(calculateAverage(evaluation.skills)), 0) / evaluations.length).toFixed(1)
-              : '0.0'
-            }
+            {evaluations.length > 0
+              ? (
+                  evaluations.reduce(
+                    (acc, evaluation) =>
+                      acc + parseFloat(calculateAverage(evaluation.skills)),
+                    0
+                  ) / evaluations.length
+                ).toFixed(1)
+              : "0.0"}
           </div>
           <div className="text-sm text-gray-600">Moyenne équipe</div>
         </div>
         <div className="bg-white border rounded-lg p-4 text-center">
           <div className="text-xl font-bold text-gray-900">
-            {evaluations.filter(evaluation => {
-              const daysDiff = Math.floor((new Date().getTime() - evaluation.date.getTime()) / (1000 * 60 * 60 * 24));
-              return daysDiff <= 7;
-            }).length}
+            {
+              evaluations.filter((evaluation) => {
+                const daysDiff = Math.floor(
+                  (new Date().getTime() - evaluation.date.getTime()) /
+                    (1000 * 60 * 60 * 24)
+                );
+                return daysDiff <= 7;
+              }).length
+            }
           </div>
           <div className="text-sm text-gray-600">Cette semaine</div>
         </div>
         <div className="bg-white border rounded-lg p-4 text-center">
           <div className="text-xl font-bold text-gray-900">
-            {new Set(evaluations.map(evaluation => evaluation.playerName)).size}
+            {
+              new Set(evaluations.map((evaluation) => evaluation.playerName))
+                .size
+            }
           </div>
           <div className="text-sm text-gray-600">Joueurs évalués</div>
         </div>
@@ -489,7 +833,9 @@ export default function EvaluationsPage() {
           <div className="bg-white rounded-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
             <div className="p-4 border-b">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-medium text-gray-900">Nouvelle évaluation</h2>
+                <h2 className="text-lg font-medium text-gray-900">
+                  Nouvelle évaluation
+                </h2>
                 <button
                   onClick={() => setShowNewEvalModal(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -498,7 +844,7 @@ export default function EvaluationsPage() {
                 </button>
               </div>
             </div>
-            
+
             <div className="p-4 space-y-4">
               {/* Sélection catégorie */}
               <div>
@@ -506,14 +852,24 @@ export default function EvaluationsPage() {
                   Catégorie
                 </label>
                 <div className="grid grid-cols-4 gap-2">
-                  {["U5", "U7", "U9", "U11", "U13", "U15", "U18", "Junior", "Senior"].map((category) => (
+                  {[
+                    "U5",
+                    "U7",
+                    "U9",
+                    "U11",
+                    "U13",
+                    "U15",
+                    "U18",
+                    "Junior",
+                    "Senior",
+                  ].map((category) => (
                     <button
                       key={category}
                       onClick={() => handleCategoryChange(category)}
                       className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
                         selectedCategory === category
-                          ? 'bg-red-600 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? "bg-red-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                       }`}
                     >
                       {category}
@@ -548,55 +904,82 @@ export default function EvaluationsPage() {
                     <label className="block text-xs font-medium text-gray-600 mb-1">
                       Nom du joueur
                     </label>
-                    <div className="text-sm text-gray-900">{newEvaluation.playerName}</div>
+                    <div className="text-sm text-gray-900">
+                      {newEvaluation.playerName}
+                    </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">
                       Numéro
                     </label>
-                    <div className="text-sm text-gray-900">#{newEvaluation.playerNumber}</div>
+                    <div className="text-sm text-gray-900">
+                      #{newEvaluation.playerNumber}
+                    </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">
                       Position
                     </label>
-                    <div className="text-sm text-gray-900">{newEvaluation.position}</div>
+                    <div className="text-sm text-gray-900">
+                      {newEvaluation.position}
+                    </div>
                   </div>
                 </div>
               )}
 
               {/* Compétences */}
               <div>
-                <h3 className="text-base font-medium text-gray-900 mb-3">Évaluation des compétences (1-10)</h3>
+                <h3 className="text-base font-medium text-gray-900 mb-3">
+                  Évaluation des compétences (1-10)
+                </h3>
                 <div className="space-y-3">
-                  {Object.entries(newEvaluation.skills).map(([skill, score]) => (
-                    <div key={skill} className="flex items-center justify-between">
-                      <label className="text-sm text-gray-700 w-24">
-                        {skill === 'gameIQ' ? 'Vision de jeu' : 
-                         skill === 'skating' ? 'Patinage' :
-                         skill === 'shooting' ? 'Tir' :
-                         skill === 'passing' ? 'Passes' :
-                         skill === 'defense' ? 'Défense' :
-                         skill === 'attitude' ? 'Attitude' : skill}
-                      </label>
-                      <div className="flex items-center gap-3 flex-1 max-w-xs">
-                        <input
-                          type="range"
-                          min="1"
-                          max="10"
-                          value={score}
-                          onChange={(e) => setNewEvaluation(prev => ({
-                            ...prev,
-                            skills: { ...prev.skills, [skill]: parseInt(e.target.value) }
-                          }))}
-                          className="flex-1"
-                        />
-                        <span className="text-sm font-medium text-gray-900 w-8">{score}/10</span>
+                  {Object.entries(newEvaluation.skills).map(
+                    ([skill, score]) => (
+                      <div
+                        key={skill}
+                        className="flex items-center justify-between"
+                      >
+                        <label className="text-sm text-gray-700 w-24">
+                          {skill === "gameIQ"
+                            ? "Vision de jeu"
+                            : skill === "skating"
+                            ? "Patinage"
+                            : skill === "shooting"
+                            ? "Tir"
+                            : skill === "passing"
+                            ? "Passes"
+                            : skill === "defense"
+                            ? "Défense"
+                            : skill === "attitude"
+                            ? "Attitude"
+                            : skill}
+                        </label>
+                        <div className="flex items-center gap-3 flex-1 max-w-xs">
+                          <input
+                            type="range"
+                            min="1"
+                            max="10"
+                            value={score}
+                            onChange={(e) =>
+                              setNewEvaluation((prev) => ({
+                                ...prev,
+                                skills: {
+                                  ...prev.skills,
+                                  [skill]: parseInt(e.target.value),
+                                },
+                              }))
+                            }
+                            className="flex-1"
+                          />
+                          <span className="text-sm font-medium text-gray-900 w-8">
+                            {score}/10
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
 
@@ -607,10 +990,42 @@ export default function EvaluationsPage() {
                 </label>
                 <textarea
                   value={newEvaluation.comments}
-                  onChange={(e) => setNewEvaluation(prev => ({ ...prev, comments: e.target.value }))}
+                  onChange={(e) =>
+                    setNewEvaluation((prev) => ({
+                      ...prev,
+                      comments: e.target.value,
+                    }))
+                  }
                   className="w-full p-3 border border-gray-300 rounded text-sm h-24 resize-none focus:outline-none focus:ring-1 focus:ring-red-500"
                   placeholder="Points forts, points à améliorer, observations générales..."
                 />
+              </div>
+
+              {/* Pièces jointes */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pièces jointes
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                  <div className="text-center">
+                    <label htmlFor="file-upload" className="cursor-pointer">
+                      <span className="text-sm text-gray-600">
+                        Cliquez pour ajouter des fichiers ou glissez-déposez
+                      </span>
+                      <input
+                        id="file-upload"
+                        name="file-upload"
+                        type="file"
+                        className="sr-only"
+                        multiple
+                        accept="video/*,image/*,.pdf,.doc,.docx"
+                      />
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Vidéos, images et documents acceptés
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Évaluateur */}
@@ -620,7 +1035,12 @@ export default function EvaluationsPage() {
                 </label>
                 <select
                   value={newEvaluation.evaluatedBy}
-                  onChange={(e) => setNewEvaluation(prev => ({ ...prev, evaluatedBy: e.target.value }))}
+                  onChange={(e) =>
+                    setNewEvaluation((prev) => ({
+                      ...prev,
+                      evaluatedBy: e.target.value,
+                    }))
+                  }
                   className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
                 >
                   <option value="Coach Martin">Coach Martin</option>
@@ -643,7 +1063,7 @@ export default function EvaluationsPage() {
                 className="text-sm bg-red-600 hover:bg-red-700"
                 disabled={!selectedPlayerId}
               >
-                Enregistrer l&apos;évaluation
+                Enregistrer l&apos;évaluation ici
               </Button>
             </div>
           </div>
