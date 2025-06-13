@@ -28,11 +28,7 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
   return (
     <div className={cn("min-h-screen bg-gray-50 flex", className)}>
       {/* Fixed Sidebar */}
-      <Sidebar
-        isCollapsed={isCollapsed}
-        setIsCollapsed={setIsCollapsed}
-        onChatOpen={() => setIsChatOpen(true)}
-      />
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
       {/* Main Content Area */}
       <div

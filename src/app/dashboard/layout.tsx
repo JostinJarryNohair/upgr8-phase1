@@ -6,7 +6,7 @@ import { SimpleLoadingScreen } from "@/components/common/SimpleLoadingScreen";
 
 /**
  * Dashboard Layout
- * 
+ *
  * Wraps all pages under the /dashboard route with the DashboardLayout component.
  * Provides consistent sidebar, topbar, and content structure with loading screen.
  */
@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       {/* Dashboard loading screen */}
       <SimpleLoadingScreen isLoading={isDashboardLoading} />
-      
+
       {/* Show dashboard after loading */}
       {!isDashboardLoading && <DashboardLayout>{children}</DashboardLayout>}
     </>
