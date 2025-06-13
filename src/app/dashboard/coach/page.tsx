@@ -10,6 +10,7 @@ import {
   Users2,
   MessageSquare,
   LucideIcon,
+  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TeamsPage from "../teams/page";
@@ -17,6 +18,7 @@ import StaffPage from "../staff/page";
 import EvaluationsPage from "../evaluations/page";
 import PlayersPage from "../players/page";
 import CampsPage from "./camps/page";
+import RegularSeasonPage from "./regular-season/page";
 
 type ViewType =
   | "teams"
@@ -25,7 +27,8 @@ type ViewType =
   | "evaluations"
   | "staff"
   | "messages"
-  | "camps";
+  | "camps"
+  | "regular-season";
 
 interface NavItem {
   id: ViewType;
@@ -51,6 +54,8 @@ export default function CoachDashboard() {
         return <StaffPage />;
       case "camps":
         return <CampsPage />;
+      case "regular-season":
+        return <RegularSeasonPage />;
       default:
         return <TeamsPage />;
     }
@@ -64,6 +69,7 @@ export default function CoachDashboard() {
     { id: "staff", label: "Personnel", icon: Users2 },
     { id: "messages", label: "Messages", icon: MessageSquare },
     { id: "camps", label: "Camps", icon: Dumbbell },
+    { id: "regular-season", label: "Saison régulière", icon: Calendar },
   ];
 
   return (
