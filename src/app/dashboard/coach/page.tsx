@@ -8,7 +8,6 @@ import {
   Dumbbell,
   ClipboardCheck,
   Users2,
-  MessageSquare,
   LucideIcon,
   Calendar,
 } from "lucide-react";
@@ -19,6 +18,7 @@ import EvaluationsPage from "../evaluations/page";
 import PlayersPage from "../players/page";
 import CampsPage from "./camps/page";
 import RegularSeasonPage from "./regular-season/page";
+import TrainingPage from "../training/page";
 
 type ViewType =
   | "teams"
@@ -26,7 +26,6 @@ type ViewType =
   | "training"
   | "evaluations"
   | "staff"
-  | "messages"
   | "camps"
   | "regular-season";
 
@@ -47,7 +46,7 @@ export default function CoachDashboard() {
       case "players":
         return <PlayersPage />;
       case "training":
-        return <CampsPage />;
+        return <TrainingPage />;
       case "evaluations":
         return <EvaluationsPage />;
       case "staff":
@@ -62,14 +61,13 @@ export default function CoachDashboard() {
   };
 
   const navItems: NavItem[] = [
+    { id: "camps", label: "Camps", icon: Dumbbell },
+    { id: "regular-season", label: "Saison régulière", icon: Calendar },
     { id: "teams", label: "Équipes", icon: Users },
     { id: "players", label: "Joueurs", icon: User },
     { id: "training", label: "Entrainement", icon: Dumbbell },
     { id: "evaluations", label: "Évaluations", icon: ClipboardCheck },
     { id: "staff", label: "Personnel", icon: Users2 },
-    { id: "messages", label: "Messages", icon: MessageSquare },
-    { id: "camps", label: "Camps", icon: Dumbbell },
-    { id: "regular-season", label: "Saison régulière", icon: Calendar },
   ];
 
   return (
