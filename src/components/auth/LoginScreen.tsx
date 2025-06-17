@@ -6,6 +6,7 @@ import { DynamicButton } from "@/components/ui/dynamic-button";
 import { SimpleLoadingScreen } from "@/components/common/SimpleLoadingScreen";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 /**
  * Form values interface for login submission
@@ -24,22 +25,14 @@ export interface LoginScreenProps {
    * Optional callback for handling login form submission
    */
   onLoginSubmit?: (data: LoginFormValues) => void;
-  /**
-   * Optional callback for navigating to create account page
-   */
-  onNavigateToCreateAccount?: () => void;
-  /**
-   * Optional callback for navigating to forgot password page
-   */
-  onNavigateToForgotPassword?: () => void;
 }
 
 /**
  * LoginScreen Component
- * 
+ *
  * A full-page login interface with modern design and animations.
  * Uses the custom DynamicInput and DynamicButton components.
- * 
+ *
  * Features:
  * - Email and password inputs with automatic icons
  * - Password visibility toggle
@@ -48,16 +41,12 @@ export interface LoginScreenProps {
  * - Create account call-to-action
  * - Responsive design with animated entrance
  */
-export function LoginScreen({
-  onLoginSubmit,
-  onNavigateToCreateAccount,
-  onNavigateToForgotPassword
-}: LoginScreenProps) {
+export function LoginScreen({ onLoginSubmit }: LoginScreenProps) {
   // Form state management
   const [formData, setFormData] = React.useState<LoginFormValues>({
     email: "",
     password: "",
-    rememberMe: false
+    rememberMe: false,
   });
   const [errors, setErrors] = React.useState<Partial<LoginFormValues>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -65,14 +54,14 @@ export function LoginScreen({
   // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name as keyof LoginFormValues]) {
-      setErrors(prev => {
+      setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[name as keyof LoginFormValues];
         return newErrors;
@@ -83,19 +72,20 @@ export function LoginScreen({
   // Form validation
   const validateForm = (): boolean => {
     const newErrors: Partial<LoginFormValues> = {};
-    
+
     if (!formData.email) {
       newErrors.email = "Le courriel est requis";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Veuillez entrer une adresse courriel valide";
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Le mot de passe est requis";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Le mot de passe doit contenir au moins 6 caractères";
+      newErrors.password =
+        "Le mot de passe doit contenir au moins 6 caractères";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -107,40 +97,44 @@ export function LoginScreen({
       password: "coach123",
       type: "coach",
       name: "Coach Martin",
-      redirectPath: "/dashboard/coach"
+      redirectPath: "/dashboard/coach",
     },
     {
-      email: "player@upgr8.com", 
+      email: "player@upgr8.com",
       password: "player123",
       type: "player",
       name: "Alexandre Dubois",
-      redirectPath: "/player"
-    }
+      redirectPath: "/player",
+    },
   ];
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
-    
+
     // Simulate API call delay with longer loading time to show the 3D animation
     setTimeout(() => {
       // Check mock accounts
       const account = mockAccounts.find(
-        acc => acc.email === formData.email && acc.password === formData.password
+        (acc) =>
+          acc.email === formData.email && acc.password === formData.password
       );
 
       if (account) {
         // Store user data in localStorage
-        localStorage.setItem('userType', account.type);
-        localStorage.setItem('userData', JSON.stringify({
-          name: account.name,
-          email: account.email,
-          type: account.type
-        }));
+        localStorage.setItem("userType", account.type);
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            name: account.name,
+            email: account.email,
+            type: account.type,
+          })
+        );
 
         if (onLoginSubmit) {
           onLoginSubmit(formData);
@@ -153,10 +147,10 @@ export function LoginScreen({
         // Invalid credentials
         setErrors({
           email: "Courriel ou mot de passe invalide",
-          password: "Courriel ou mot de passe invalide"
+          password: "Courriel ou mot de passe invalide",
         });
       }
-      
+
       setIsSubmitting(false);
     }, 3000); // Increased to 3 seconds to show the hockey stick animation
   };
@@ -170,28 +164,28 @@ export function LoginScreen({
       transition: {
         duration: 0.6,
         ease: "easeOut",
-        staggerChildren: 0.15
-      }
-    }
+        staggerChildren: 0.15,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
     <>
       {/* Simple Loading Screen */}
       <SimpleLoadingScreen isLoading={isSubmitting} />
-      
+
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <motion.div
           className="w-full max-w-md"
@@ -200,15 +194,12 @@ export function LoginScreen({
           variants={containerVariants}
         >
           {/* Logo Section */}
-          <motion.div 
-            className="text-center"
-            variants={itemVariants}
-          >
+          <motion.div className="text-center" variants={itemVariants}>
             <div className="inline-flex items-center justify-center">
-              <Image 
-                src="/logo.png" 
-                alt="UpGr8 Logo" 
-                width={320} 
+              <Image
+                src="/logo.png"
+                alt="UpGr8 Logo"
+                width={320}
                 height={112}
                 priority
                 className="w-auto h-24"
@@ -217,21 +208,31 @@ export function LoginScreen({
           </motion.div>
 
           {/* Main Card Container */}
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 mt-4"
             variants={itemVariants}
           >
             {/* Header Text */}
             <div className="text-center mb-6">
-              <h1 className="text-xl font-semibold text-gray-900 mb-1">Connectez-vous à votre compte</h1>
-              <p className="text-gray-600 text-sm">Bon retour ! Veuillez entrer vos informations.</p>
-              
+              <h1 className="text-xl font-semibold text-gray-900 mb-1">
+                Connectez-vous à votre compte
+              </h1>
+              <p className="text-gray-600 text-sm">
+                Bon retour ! Veuillez entrer vos informations.
+              </p>
+
               {/* Demo Accounts */}
               <div className="mt-4 p-3 bg-blue-50 rounded-lg text-left">
-                <p className="text-xs font-medium text-blue-900 mb-2">Comptes de démonstration :</p>
+                <p className="text-xs font-medium text-blue-900 mb-2">
+                  Comptes de démonstration :
+                </p>
                 <div className="text-xs text-blue-800 space-y-1">
-                  <div><strong>Entraîneur :</strong> coach@upgr8.com / coach123</div>
-                  <div><strong>Joueur :</strong> player@upgr8.com / player123</div>
+                  <div>
+                    <strong>Entraîneur :</strong> coach@upgr8.com / coach123
+                  </div>
+                  <div>
+                    <strong>Joueur :</strong> player@upgr8.com / player123
+                  </div>
                 </div>
               </div>
             </div>
@@ -241,7 +242,10 @@ export function LoginScreen({
               <div className="space-y-4">
                 {/* Email Input */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Email
                   </label>
                   <DynamicInput
@@ -258,7 +262,10 @@ export function LoginScreen({
 
                 {/* Password Input */}
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Mot de passe
                   </label>
                   <DynamicInput
@@ -285,22 +292,18 @@ export function LoginScreen({
                     onChange={handleInputChange}
                     className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500 focus:ring-offset-2"
                   />
-                  <span className="ml-2 text-sm text-gray-700">Se souvenir pendant 30 jours</span>
+                  <span className="ml-2 text-sm text-gray-700">
+                    Se souvenir pendant 30 jours
+                  </span>
                 </label>
 
                 {/* Forgot Password Link */}
-                <a 
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (onNavigateToForgotPassword) {
-                      onNavigateToForgotPassword();
-                    }
-                  }}
+                <Link
+                  href="/forgot-password"
                   className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
                 >
                   Mot de passe oublié ?
-                </a>
+                </Link>
               </div>
 
               {/* Sign In Button */}
@@ -318,41 +321,42 @@ export function LoginScreen({
               <div className="text-center">
                 <span className="text-sm text-gray-600">
                   Vous n&apos;avez pas de compte ?{" "}
-                  <a 
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (onNavigateToCreateAccount) {
-                        onNavigateToCreateAccount();
-                      } else {
-                        window.location.href = "/signup";
-                      }
-                    }}
+                  <Link
+                    href="/signup"
                     className="font-medium text-red-600 hover:text-red-700 transition-colors"
                   >
                     S&apos;inscrire
-                  </a>
+                  </Link>
                 </span>
               </div>
             </form>
           </motion.div>
 
           {/* Footer Links */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="mt-4 flex items-center justify-center space-x-4 text-sm"
           >
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link
+              href="/"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               © 2025 UpGr8
-            </a>
+            </Link>
             <span className="text-gray-300">•</span>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link
+              href="/privacy"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Politique de confidentialité
-            </a>
+            </Link>
             <span className="text-gray-300">•</span>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link
+              href="/terms"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Conditions d&apos;utilisation
-            </a>
+            </Link>
           </motion.div>
         </motion.div>
       </div>
