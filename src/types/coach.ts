@@ -1,12 +1,44 @@
-export type UserRole = 'coach-chef' | 'dg' | 'directeur-hockey' | 'entraineur-adjoint' | 'depisteur';
+export type UserRole =
+  | "coach-chef"
+  | "dg"
+  | "directeur-hockey"
+  | "entraineur-adjoint"
+  | "depisteur";
 
-export type PlayerStatus = 'invite' | 'a-evaluer' | 'locke' | 'Active' | 'Inactive' | 'Injured';
+export type PlayerStatus =
+  | "invite"
+  | "a-evaluer"
+  | "locke"
+  | "Active"
+  | "Inactive"
+  | "Injured";
 
-export type PlayerPosition = 'Gardien' | 'Défenseur' | 'Attaquant' | 'Centre' | 'Ailier gauche' | 'Ailier droit' | 'Forward' | 'Defense' | 'Goalie';
+export type PlayerPosition =
+  | "Gardien"
+  | "Défenseur"
+  | "Attaquant"
+  | "Centre"
+  | "Ailier gauche"
+  | "Ailier droit"
+  | "Forward"
+  | "Defense"
+  | "Goalie";
 
-export type CampLevel = 'M13' | 'M15' | 'M18' | 'U7' | 'U9' | 'U11' | 'U13' | 'U15' | 'U18' | 'Junior' | 'Senior';
+export type CampLevel =
+  | "M13"
+  | "M15"
+  | "M18"
+  | "U7"
+  | "U9"
+  | "U11"
+  | "U13"
+  | "U15"
+  | "U18"
+  | "Junior"
+  | "Senior";
 
-export type EvaluationTag = 'cimente' | 'a-surveiller' | 'surevalue';
+export type EvaluationTag = "cimente" | "a-surveiller" | "surevalue";
+export type GameStatus = "upcoming" | "completed" | "cancelled" | "postponed";
 
 export interface Camp {
   id: string;
@@ -127,10 +159,14 @@ export interface DashboardStats {
 
 export interface Alert {
   id: string;
-  type: 'unevaluated-player' | 'inactive-evaluator' | 'pending-validation' | 'system';
+  type:
+    | "unevaluated-player"
+    | "inactive-evaluator"
+    | "pending-validation"
+    | "system";
   title: string;
   message: string;
-  severity: 'info' | 'warning' | 'error';
+  severity: "info" | "warning" | "error";
   campId?: string;
   playerId?: string;
   evaluatorId?: string;
@@ -142,8 +178,52 @@ export interface ActivityLog {
   id: string;
   userId: string;
   action: string;
-  details: Record<string, any>;
+  details: Record<string, string>;
   ipAddress?: string;
   userAgent?: string;
   timestamp: string;
+}
+
+export interface Game {
+  id: string;
+  seasonId: string;
+  homeTeam: string;
+  awayTeam: string;
+  date: string;
+  location: string;
+  status: GameStatus;
+  gamePlan?: string;
+  score?: {
+    home: number;
+    away: number;
+  };
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Season {
+  id: string;
+  name: string;
+  team: string;
+  division: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  games: Game[];
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  logo?: string;
+  stats?: {
+    totalGames: number;
+    completedGames: number;
+    wins: number;
+    losses: number;
+    overtimeLosses: number;
+    goalsFor: number;
+    goalsAgainst: number;
+    winPercentage: number;
+    goalDifferential: number;
+  };
 }
