@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Calendar, Trophy, Users, MapPin } from "lucide-react";
+import { Plus, Calendar, Trophy, Users, MapPin, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Mock data for development
@@ -21,7 +21,7 @@ const mockSeasons = [
   },
 ];
 
-const mockMatchups = [
+const initialMatchups = [
   {
     id: "match-1",
     homeTeam: "Les Titans",
@@ -30,6 +30,7 @@ const mockMatchups = [
     location: "Centre Sportif Montréal",
     division: "M15 AAA",
     status: "upcoming",
+    gamePlan: "",
   },
   {
     id: "match-2",
@@ -39,6 +40,7 @@ const mockMatchups = [
     location: "Centre Sportif Laval",
     division: "M15 AAA",
     status: "upcoming",
+    gamePlan: "",
   },
   {
     id: "match-3",
@@ -48,12 +50,34 @@ const mockMatchups = [
     location: "Centre Sportif Montréal",
     division: "M15 AAA",
     status: "upcoming",
+    gamePlan: "",
   },
 ];
 
 export default function RegularSeasonPage() {
   const [seasons] = useState(mockSeasons);
-  const [matchups] = useState(mockMatchups);
+  const [matchups, setMatchups] = useState(initialMatchups);
+  const [showPlanModal, setShowPlanModal] = useState(false);
+  const [currentGameId, setCurrentGameId] = useState<string | null>(null);
+  const [planInput, setPlanInput] = useState("");
+
+  const handleOpenPlanModal = (gameId: string, existingPlan: string) => {
+    setCurrentGameId(gameId);
+    setPlanInput(existingPlan);
+    setShowPlanModal(true);
+  };
+
+  const handleSavePlan = () => {
+    if (!currentGameId) return;
+    setMatchups((prev) =>
+      prev.map((m) =>
+        m.id === currentGameId ? { ...m, gamePlan: planInput } : m
+      )
+    );
+    setShowPlanModal(false);
+    setCurrentGameId(null);
+    setPlanInput("");
+  };
 
   return (
     <div className="space-y-6">
@@ -183,6 +207,19 @@ export default function RegularSeasonPage() {
                       })}
                     </p>
                   </div>
+                  <Button
+                    variant={match.gamePlan ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() =>
+                      handleOpenPlanModal(match.id, match.gamePlan)
+                    }
+                    className="flex items-center gap-2"
+                  >
+                    <FileText className="w-4 h-4" />
+                    {match.gamePlan
+                      ? "Modifier le plan"
+                      : "Ajouter un plan de match"}
+                  </Button>
                   <Button variant="outline" size="sm">
                     Détails
                   </Button>
@@ -192,6 +229,29 @@ export default function RegularSeasonPage() {
           ))}
         </div>
       </div>
+
+      {/* Game Plan Modal */}
+      {showPlanModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Plan de match</h3>
+            <textarea
+              className="w-full border border-gray-300 rounded p-2 mb-4 min-h-[120px]"
+              placeholder="Décrivez le plan de match, les stratégies, les points clés..."
+              value={planInput}
+              onChange={(e) => setPlanInput(e.target.value)}
+            />
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowPlanModal(false)}>
+                Annuler
+              </Button>
+              <Button onClick={handleSavePlan} disabled={!planInput.trim()}>
+                Enregistrer
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

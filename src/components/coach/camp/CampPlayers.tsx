@@ -2,22 +2,24 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  Search,
-  AlertCircle,
-  CheckCircle
-} from "lucide-react";
+import { Search, AlertCircle, CheckCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CampPlayersProps {
   campId: string;
   groups: Array<{ id: string; name: string; color: string }>;
 }
 
-const mockPlayers = [
+const initialPlayers = [
   {
     id: "1",
     name: "Alexandre Dubois",
@@ -26,7 +28,8 @@ const mockPlayers = [
     groupId: "g1",
     evaluationStatus: "completed",
     evaluationCount: 5,
-    avgScore: 4.2
+    avgScore: 4.2,
+    cut: false,
   },
   {
     id: "2",
@@ -36,17 +39,8 @@ const mockPlayers = [
     groupId: "g1",
     evaluationStatus: "partial",
     evaluationCount: 3,
-    avgScore: 4.0
-  },
-  {
-    id: "3",
-    name: "Gabriel Roy",
-    number: 4,
-    position: "Défenseur",
-    groupId: "g2",
-    evaluationStatus: "none",
-    evaluationCount: 0,
-    avgScore: 0
+    avgScore: 4.0,
+    cut: false,
   },
   {
     id: "4",
@@ -56,36 +50,44 @@ const mockPlayers = [
     groupId: "g2",
     evaluationStatus: "completed",
     evaluationCount: 4,
-    avgScore: 4.5
-  }
+    avgScore: 4.5,
+    cut: false,
+  },
 ];
 
 export function CampPlayers({ groups }: CampPlayersProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [players, setPlayers] = useState(initialPlayers);
+
+  const handleToggleCut = (id: string) => {
+    setPlayers((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, cut: !p.cut } : p))
+    );
+  };
 
   const getStatusBadge = (status: string, count: number) => {
     switch (status) {
-      case 'completed':
+      case "completed":
         return (
           <Badge className="bg-green-50 text-green-700 border-green-200">
             <CheckCircle className="w-3 h-3 mr-1" />
             {count} évaluations
           </Badge>
         );
-      case 'partial':
+      case "partial":
         return (
           <Badge className="bg-orange-50 text-orange-700 border-orange-200">
             <AlertCircle className="w-3 h-3 mr-1" />
             {count} évaluations
           </Badge>
         );
-      case 'none':
+      case "none":
         return (
           <Badge className="bg-red-50 text-red-700 border-red-200">
             <AlertCircle className="w-3 h-3 mr-1" />
-            Non évalué
+            Non évaluée
           </Badge>
         );
       default:
@@ -93,12 +95,15 @@ export function CampPlayers({ groups }: CampPlayersProps) {
     }
   };
 
-  const filteredPlayers = mockPlayers.filter(player => {
-    const matchesSearch = player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         player.number.toString().includes(searchQuery);
-    const matchesGroup = selectedGroup === "all" || player.groupId === selectedGroup;
-    const matchesStatus = statusFilter === "all" || player.evaluationStatus === statusFilter;
-    
+  const filteredPlayers = players.filter((player) => {
+    const matchesSearch =
+      player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      player.number.toString().includes(searchQuery);
+    const matchesGroup =
+      selectedGroup === "all" || player.groupId === selectedGroup;
+    const matchesStatus =
+      statusFilter === "all" || player.evaluationStatus === statusFilter;
+
     return matchesSearch && matchesGroup && matchesStatus;
   });
 
@@ -122,7 +127,7 @@ export function CampPlayers({ groups }: CampPlayersProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tous les groupes</SelectItem>
-              {groups.map(group => (
+              {groups.map((group) => (
                 <SelectItem key={group.id} value={group.id}>
                   {group.name}
                 </SelectItem>
@@ -156,15 +161,17 @@ export function CampPlayers({ groups }: CampPlayersProps) {
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredPlayers.map((player, index) => {
-            const group = groups.find(g => g.id === player.groupId);
-            
+            const group = groups.find((g) => g.id === player.groupId);
+
             return (
               <motion.div
                 key={player.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                className={`border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow relative ${
+                  player.cut ? "opacity-60 grayscale" : ""
+                }`}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -174,7 +181,13 @@ export function CampPlayers({ groups }: CampPlayersProps) {
                       </span>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900">{player.name}</h4>
+                      <h4
+                        className={`font-medium text-gray-900 ${
+                          player.cut ? "line-through" : ""
+                        }`}
+                      >
+                        {player.name}
+                      </h4>
                       <p className="text-sm text-gray-600">{player.position}</p>
                     </div>
                   </div>
@@ -190,18 +203,35 @@ export function CampPlayers({ groups }: CampPlayersProps) {
                 </div>
 
                 <div className="space-y-2">
-                  {getStatusBadge(player.evaluationStatus, player.evaluationCount)}
+                  {getStatusBadge(
+                    player.evaluationStatus,
+                    player.evaluationCount
+                  )}
                   {player.avgScore > 0 && (
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-600">Note moyenne</span>
-                      <span className="font-medium text-gray-900">{player.avgScore}/5</span>
+                      <span className="font-medium text-gray-900">
+                        {player.avgScore}/5
+                      </span>
                     </div>
+                  )}
+                  {player.cut && (
+                    <Badge className="bg-red-100 text-red-700 border-red-200">
+                      Retranché
+                    </Badge>
                   )}
                 </div>
 
                 <div className="mt-4 flex gap-2">
                   <Button size="sm" variant="outline" className="flex-1">
                     Voir évaluations
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={player.cut ? "secondary" : "destructive"}
+                    onClick={() => handleToggleCut(player.id)}
+                  >
+                    {player.cut ? "Annuler retranchement" : "Retrancher"}
                   </Button>
                 </div>
               </motion.div>
