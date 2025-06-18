@@ -36,7 +36,7 @@ interface NavItem {
 }
 
 export default function CoachDashboard() {
-  const [activeView, setActiveView] = useState<ViewType>("teams");
+  const [activeView, setActiveView] = useState<ViewType>("camps");
 
   // Render the active view
   const renderActiveView = () => {

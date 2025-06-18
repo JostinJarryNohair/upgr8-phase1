@@ -21,6 +21,8 @@ interface PlayerEvaluation {
   comments: string;
   evaluatedBy: string;
   date: Date;
+  evaluationContext: string; // 'game', 'camp', 'training', or 'other'
+  evaluationTargetId: string; // id of the game, camp, or training
 }
 
 // Mock data
@@ -42,6 +44,8 @@ const mockEvaluations: PlayerEvaluation[] = [
       "Excellente gardienne, très réactive. Doit améliorer la sortie de zone.",
     evaluatedBy: "Coach Martin",
     date: new Date("2024-01-15"),
+    evaluationContext: "game",
+    evaluationTargetId: "game1",
   },
   {
     id: "eval-2",
@@ -59,6 +63,8 @@ const mockEvaluations: PlayerEvaluation[] = [
     comments: "Bon tireur, patinage à améliorer. Très motivé à l'entraînement.",
     evaluatedBy: "Coach Sarah",
     date: new Date("2024-01-14"),
+    evaluationContext: "camp",
+    evaluationTargetId: "camp1",
   },
   {
     id: "eval-3",
@@ -76,6 +82,8 @@ const mockEvaluations: PlayerEvaluation[] = [
     comments: "Défenseuse solide, excellente vision de jeu. Continue comme ça.",
     evaluatedBy: "Coach Martin",
     date: new Date("2024-01-13"),
+    evaluationContext: "game",
+    evaluationTargetId: "game2",
   },
 ];
 
@@ -392,6 +400,21 @@ const mockPlayers = [
   },
 ];
 
+// Mock games and camps
+const mockGames = [
+  { id: "game1", label: "Match vs Dragons - 2024-02-10" },
+  { id: "game2", label: "Match vs Lynx - 2024-02-17" },
+];
+const mockCamps = [
+  { id: "camp1", label: "Camp de printemps 2024" },
+  { id: "camp2", label: "Camp d'été 2024" },
+];
+
+const mockTrainings = [
+  { id: "training1", label: "Entraînement du 2024-02-05" },
+  { id: "training2", label: "Entraînement du 2024-02-12" },
+];
+
 export default function EvaluationsPage() {
   const [selectedPlayer, setSelectedPlayer] =
     React.useState<PlayerEvaluation | null>(null);
@@ -412,6 +435,8 @@ export default function EvaluationsPage() {
     },
     comments: "",
     evaluatedBy: "Coach Martin",
+    evaluationContext: "game",
+    evaluationTargetId: "",
   });
   const [selectedCategory, setSelectedCategory] = React.useState("U15");
   const [selectedPlayerId, setSelectedPlayerId] = React.useState("");
@@ -457,6 +482,7 @@ export default function EvaluationsPage() {
 
   const handleNewEvaluation = () => {
     if (!selectedPlayerId) return;
+    if (!newEvaluation.evaluationTargetId) return;
 
     // Créer la nouvelle évaluation
     const newPlayerEvaluation: PlayerEvaluation = {
@@ -468,6 +494,8 @@ export default function EvaluationsPage() {
       comments: newEvaluation.comments,
       evaluatedBy: newEvaluation.evaluatedBy,
       date: new Date(),
+      evaluationContext: newEvaluation.evaluationContext,
+      evaluationTargetId: newEvaluation.evaluationTargetId,
     };
 
     // Ajouter à la liste des évaluations
@@ -491,6 +519,8 @@ export default function EvaluationsPage() {
       },
       comments: "",
       evaluatedBy: "Coach Martin",
+      evaluationContext: "game",
+      evaluationTargetId: "",
     });
     setSelectedCategory("U15");
     setSelectedPlayerId("");
@@ -677,6 +707,38 @@ export default function EvaluationsPage() {
                     Évalué par {selectedPlayer.evaluatedBy} le{" "}
                     {selectedPlayer.date.toLocaleDateString("fr-CA")}
                   </div>
+                  {/* Affichage du contexte et cible d'évaluation */}
+                  {selectedPlayer.evaluationContext &&
+                    selectedPlayer.evaluationTargetId && (
+                      <div className="text-sm text-gray-500 mt-1">
+                        <span className="font-medium text-gray-700">
+                          Contexte :{" "}
+                        </span>
+                        {selectedPlayer.evaluationContext === "game" &&
+                          "Match : "}
+                        {selectedPlayer.evaluationContext === "camp" &&
+                          "Camp d&apos;entraînement : "}
+                        {selectedPlayer.evaluationContext === "training" &&
+                          "Entraînement : "}
+                        <span className="font-medium text-gray-700">
+                          {selectedPlayer.evaluationContext === "game" &&
+                            (mockGames.find(
+                              (g) => g.id === selectedPlayer.evaluationTargetId
+                            )?.label ||
+                              selectedPlayer.evaluationTargetId)}
+                          {selectedPlayer.evaluationContext === "camp" &&
+                            (mockCamps.find(
+                              (c) => c.id === selectedPlayer.evaluationTargetId
+                            )?.label ||
+                              selectedPlayer.evaluationTargetId)}
+                          {selectedPlayer.evaluationContext === "training" &&
+                            (mockTrainings.find(
+                              (t) => t.id === selectedPlayer.evaluationTargetId
+                            )?.label ||
+                              selectedPlayer.evaluationTargetId)}
+                        </span>
+                      </div>
+                    )}
                 </div>
 
                 {/* Compétences */}
@@ -1048,6 +1110,103 @@ export default function EvaluationsPage() {
                   <option value="Coach Alex">Coach Alex</option>
                 </select>
               </div>
+
+              {/* Contexte d'évaluation */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Contexte d&apos;évaluation
+                </label>
+                <select
+                  value={newEvaluation.evaluationContext}
+                  onChange={(e) =>
+                    setNewEvaluation((prev) => ({
+                      ...prev,
+                      evaluationContext: e.target.value,
+                      evaluationTargetId: "",
+                    }))
+                  }
+                  className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+                >
+                  <option value="game">Match</option>
+                  <option value="camp">Camp d&apos;entraînement</option>
+                  <option value="training">Entraînement</option>
+                  <option value="other">Autre</option>
+                </select>
+              </div>
+
+              {/* Sélection du match, camp, ou entraînement */}
+              {newEvaluation.evaluationContext === "game" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sélectionnez le match
+                  </label>
+                  <select
+                    value={newEvaluation.evaluationTargetId}
+                    onChange={(e) =>
+                      setNewEvaluation((prev) => ({
+                        ...prev,
+                        evaluationTargetId: e.target.value,
+                      }))
+                    }
+                    className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+                  >
+                    <option value="">Choisir un match...</option>
+                    {mockGames.map((game) => (
+                      <option key={game.id} value={game.id}>
+                        {game.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {newEvaluation.evaluationContext === "camp" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sélectionnez le camp d&apos;entraînement
+                  </label>
+                  <select
+                    value={newEvaluation.evaluationTargetId}
+                    onChange={(e) =>
+                      setNewEvaluation((prev) => ({
+                        ...prev,
+                        evaluationTargetId: e.target.value,
+                      }))
+                    }
+                    className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+                  >
+                    <option value="">Choisir un camp...</option>
+                    {mockCamps.map((camp) => (
+                      <option key={camp.id} value={camp.id}>
+                        {camp.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {newEvaluation.evaluationContext === "training" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sélectionnez l&apos;entraînement
+                  </label>
+                  <select
+                    value={newEvaluation.evaluationTargetId}
+                    onChange={(e) =>
+                      setNewEvaluation((prev) => ({
+                        ...prev,
+                        evaluationTargetId: e.target.value,
+                      }))
+                    }
+                    className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+                  >
+                    <option value="">Choisir un entraînement...</option>
+                    {mockTrainings.map((training) => (
+                      <option key={training.id} value={training.id}>
+                        {training.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             <div className="p-4 border-t flex gap-2 justify-end">
