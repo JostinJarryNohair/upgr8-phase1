@@ -4,7 +4,6 @@ import * as React from "react";
 import { DynamicInput } from "@/components/ui/dynamic-input";
 import { DynamicButton } from "@/components/ui/dynamic-button";
 import { SimpleLoadingScreen } from "@/components/common/SimpleLoadingScreen";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -155,63 +154,28 @@ export function LoginScreen({ onLoginSubmit }: LoginScreenProps) {
     }, 3000); // Increased to 3 seconds to show the hockey stick animation
   };
 
-  // Animation variants for the form container
-  const containerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-
   return (
     <>
       {/* Simple Loading Screen */}
       <SimpleLoadingScreen isLoading={isSubmitting} />
 
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
-        <motion.div
-          className="w-full max-w-md"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
+        <div>
           {/* Logo Section */}
-          <motion.div className="text-center" variants={itemVariants}>
+          <div className="text-center">
             <div className="inline-flex items-center justify-center">
               <Image
                 src="/logo.png"
                 alt="UpGr8 Logo"
-                width={320}
-                height={112}
+                width={220}
+                height={220}
                 priority
-                className="w-auto h-24"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Main Card Container */}
-          <motion.div
-            className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 mt-4"
-            variants={itemVariants}
-          >
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 -mt-20">
             {/* Header Text */}
             <div className="text-center mb-6">
               <h1 className="text-xl font-semibold text-gray-900 mb-1">
@@ -330,13 +294,10 @@ export function LoginScreen({ onLoginSubmit }: LoginScreenProps) {
                 </span>
               </div>
             </form>
-          </motion.div>
+          </div>
 
           {/* Footer Links */}
-          <motion.div
-            variants={itemVariants}
-            className="mt-4 flex items-center justify-center space-x-4 text-sm"
-          >
+          <div className="mt-4 flex items-center justify-center space-x-4 text-sm">
             <Link
               href="/"
               className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -357,8 +318,8 @@ export function LoginScreen({ onLoginSubmit }: LoginScreenProps) {
             >
               Conditions d&apos;utilisation
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </>
   );
