@@ -193,10 +193,8 @@ export interface Game {
   location: string;
   status: GameStatus;
   gamePlan?: string;
-  score?: {
-    home: number;
-    away: number;
-  };
+  homeScore?: number | null;
+  awayScore?: number | null;
   notes?: string;
   createdAt: string;
   updatedAt: string;
@@ -211,19 +209,34 @@ export interface Season {
   endDate: string;
   location: string;
   games: Game[];
+  players: SeasonPlayer[];
+  groups: Group[];
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
   logo?: string;
   stats?: {
     totalGames: number;
-    completedGames: number;
+    playedGames: number;
     wins: number;
     losses: number;
-    overtimeLosses: number;
+    ties: number;
     goalsFor: number;
     goalsAgainst: number;
-    winPercentage: number;
-    goalDifferential: number;
+    totalPlayers: number;
+    activePlayers: number;
   };
+}
+
+export interface SeasonPlayer {
+  id: string;
+  name: string;
+  number: number;
+  position: string;
+  birthDate: string;
+  groupId: string;
+  evaluationStatus?: "completed" | "partial" | "none";
+  evaluationCount?: number;
+  avgScore?: number;
+  cut?: boolean;
 }

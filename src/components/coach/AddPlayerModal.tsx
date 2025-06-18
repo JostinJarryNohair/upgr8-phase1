@@ -6,43 +6,57 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Player, PlayerPosition, PlayerStatus } from "@/types/coach";
 
 interface AddPlayerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Player, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onSubmit: (data: Omit<Player, "id" | "createdAt" | "updatedAt">) => void;
   initialData?: Player | null;
-  campId: string;
+  campId?: string;
+  seasonId?: string;
 }
 
 const positions: PlayerPosition[] = [
-  'Gardien', 
-  'Défenseur', 
-  'Attaquant', 
-  'Centre', 
-  'Ailier gauche', 
-  'Ailier droit'
+  "Gardien",
+  "Défenseur",
+  "Attaquant",
+  "Centre",
+  "Ailier gauche",
+  "Ailier droit",
 ];
 
 const statuses: { value: PlayerStatus; label: string }[] = [
-  { value: 'invite', label: 'Invité' },
-  { value: 'a-evaluer', label: 'À évaluer' },
-  { value: 'locke', label: 'Confirmé' }
+  { value: "invite", label: "Invité" },
+  { value: "a-evaluer", label: "À évaluer" },
+  { value: "locke", label: "Confirmé" },
 ];
 
-export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId }: AddPlayerModalProps) {
+export function AddPlayerModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialData,
+  campId,
+  seasonId,
+}: AddPlayerModalProps) {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    position: '' as PlayerPosition,
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    position: "" as PlayerPosition,
     number: 0,
-    status: 'a-evaluer' as PlayerStatus,
+    status: "a-evaluer" as PlayerStatus,
     groupIds: [] as string[],
-    campId: campId,
-    photoUrl: ''
+    campId: campId || seasonId || "",
+    photoUrl: "",
   });
 
   useEffect(() => {
@@ -56,22 +70,22 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
         status: initialData.status,
         groupIds: initialData.groupIds,
         campId: initialData.campId,
-        photoUrl: initialData.photoUrl || ''
+        photoUrl: initialData.photoUrl || "",
       });
     } else {
       setFormData({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        position: '' as PlayerPosition,
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        position: "" as PlayerPosition,
         number: 0,
-        status: 'a-evaluer' as PlayerStatus,
+        status: "a-evaluer" as PlayerStatus,
         groupIds: [],
-        campId: campId,
-        photoUrl: ''
+        campId: campId || seasonId || "",
+        photoUrl: "",
       });
     }
-  }, [initialData, campId]);
+  }, [initialData, campId, seasonId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,9 +112,14 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
         >
           <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
-              {initialData ? 'Modifier le joueur' : 'Nouveau joueur'}
+              {initialData ? "Modifier le joueur" : "Nouveau joueur"}
             </h2>
-            <Button variant="ghost" size="lg" onClick={onClose} className="h-12 w-12">
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={onClose}
+              className="h-12 w-12"
+            >
               <X className="h-6 w-6" />
             </Button>
           </div>
@@ -112,7 +131,9 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                 <Input
                   id="firstName"
                   value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                   placeholder="Jean"
                   required
                 />
@@ -123,7 +144,9 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                 <Input
                   id="lastName"
                   value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                   placeholder="Tremblay"
                   required
                 />
@@ -136,7 +159,9 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                 id="dateOfBirth"
                 type="date"
                 value={formData.dateOfBirth}
-                onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateOfBirth: e.target.value })
+                }
                 required
               />
             </div>
@@ -146,15 +171,22 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                 <Label htmlFor="position">Position</Label>
                 <Select
                   value={formData.position}
-                  onValueChange={(value) => setFormData({ ...formData, position: value as PlayerPosition })}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      position: value as PlayerPosition,
+                    })
+                  }
                   required
                 >
                   <SelectTrigger id="position">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
-                    {positions.map(position => (
-                      <SelectItem key={position} value={position}>{position}</SelectItem>
+                    {positions.map((position) => (
+                      <SelectItem key={position} value={position}>
+                        {position}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -167,8 +199,13 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                   type="number"
                   min="0"
                   max="99"
-                  value={formData.number || ''}
-                  onChange={(e) => setFormData({ ...formData, number: parseInt(e.target.value) || 0 })}
+                  value={formData.number || ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      number: parseInt(e.target.value) || 0,
+                    })
+                  }
                   placeholder="99"
                   required
                 />
@@ -179,13 +216,15 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
               <Label htmlFor="status">Statut</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value) => setFormData({ ...formData, status: value as PlayerStatus })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, status: value as PlayerStatus })
+                }
               >
                 <SelectTrigger id="status">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {statuses.map(status => (
+                  {statuses.map((status) => (
                     <SelectItem key={status.value} value={status.value}>
                       {status.label}
                     </SelectItem>
@@ -200,7 +239,9 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                 id="photoUrl"
                 type="url"
                 value={formData.photoUrl}
-                onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, photoUrl: e.target.value })
+                }
                 placeholder="https://example.com/photo.jpg"
               />
             </div>
@@ -210,7 +251,7 @@ export function AddPlayerModal({ isOpen, onClose, onSubmit, initialData, campId 
                 Annuler
               </Button>
               <Button type="submit" className="bg-red-600 hover:bg-red-700">
-                {initialData ? 'Enregistrer' : 'Ajouter le joueur'}
+                {initialData ? "Enregistrer" : "Ajouter le joueur"}
               </Button>
             </div>
           </form>
