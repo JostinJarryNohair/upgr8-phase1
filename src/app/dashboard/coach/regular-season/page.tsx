@@ -60,6 +60,20 @@ export default function RegularSeasonPage() {
   const [showPlanModal, setShowPlanModal] = useState(false);
   const [currentGameId, setCurrentGameId] = useState<string | null>(null);
   const [planInput, setPlanInput] = useState("");
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [csvInput, setCsvInput] = useState("");
+  type CsvGame = {
+    id: string;
+    homeTeam: string;
+    awayTeam: string;
+    date: string;
+    location: string;
+    division: string;
+    status: string;
+    gamePlan: string;
+  };
+  const [csvPreview, setCsvPreview] = useState<CsvGame[]>([]);
+  const [csvError, setCsvError] = useState("");
 
   const handleOpenPlanModal = (gameId: string, existingPlan: string) => {
     setCurrentGameId(gameId);
@@ -77,6 +91,59 @@ export default function RegularSeasonPage() {
     setShowPlanModal(false);
     setCurrentGameId(null);
     setPlanInput("");
+  };
+
+  // CSV parsing logic
+  function parseCsvGames(csv: string) {
+    const lines = csv.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+    const header = lines[0].split(",").map((h) => h.trim());
+    const required = [
+      "date",
+      "time",
+      "homeTeam",
+      "awayTeam",
+      "location",
+      "division",
+    ];
+    if (!required.every((col) => header.includes(col))) {
+      setCsvError("Colonnes requises: " + required.join(", "));
+      return [];
+    }
+    return lines.slice(1).map((line, idx) => {
+      const values = line.split(",").map((v) => v.trim());
+      const obj: Record<string, string> = {};
+      header.forEach((h, i) => (obj[h] = values[i]));
+      return {
+        id: `imported-${Date.now()}-${idx}`,
+        homeTeam: obj.homeTeam,
+        awayTeam: obj.awayTeam,
+        date: obj.date + "T" + (obj.time || "00:00"),
+        location: obj.location,
+        division: obj.division,
+        status: "upcoming",
+        gamePlan: "",
+      };
+    });
+  }
+
+  const handleCsvPreview = () => {
+    setCsvError("");
+    try {
+      const preview = parseCsvGames(csvInput);
+      setCsvPreview(preview);
+    } catch {
+      setCsvError("Erreur lors de l'analyse du CSV");
+      setCsvPreview([]);
+    }
+  };
+
+  const handleCsvImport = () => {
+    setMatchups((prev) => [...csvPreview, ...prev]);
+    setShowImportModal(false);
+    setCsvInput("");
+    setCsvPreview([]);
+    setCsvError("");
   };
 
   return (
@@ -137,6 +204,13 @@ export default function RegularSeasonPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Import CSV Button */}
+      <div className="flex justify-end mb-2">
+        <Button variant="outline" onClick={() => setShowImportModal(true)}>
+          Importer calendrier (CSV)
+        </Button>
       </div>
 
       {/* Seasons List */}
@@ -249,6 +323,63 @@ export default function RegularSeasonPage() {
                 Enregistrer
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
+            <h3 className="text-lg font-semibold mb-4">
+              Importer le calendrier (CSV)
+            </h3>
+            <p className="mb-2 text-sm text-gray-600">
+              Collez le contenu CSV ci-dessous. Colonnes requises:{" "}
+              <b>date, time, homeTeam, awayTeam, location, division</b>
+            </p>
+            <textarea
+              className="w-full border border-gray-300 rounded p-2 mb-2 min-h-[100px] font-mono text-xs"
+              placeholder="date,time,homeTeam,awayTeam,location,division\n2024-09-15,14:00,Les Titans,Les Dragons,Centre Sportif Montréal,M15 AAA"
+              value={csvInput}
+              onChange={(e) => setCsvInput(e.target.value)}
+            />
+            <div className="flex gap-2 mb-2">
+              <Button variant="secondary" onClick={handleCsvPreview}>
+                Prévisualiser
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowImportModal(false)}
+              >
+                Annuler
+              </Button>
+            </div>
+            {csvError && (
+              <div className="text-red-500 text-sm mb-2">{csvError}</div>
+            )}
+            {csvPreview.length > 0 && (
+              <div className="mb-2">
+                <h4 className="font-semibold text-sm mb-1">
+                  Aperçu des matchs importés:
+                </h4>
+                <ul className="max-h-32 overflow-y-auto text-xs bg-gray-50 rounded p-2">
+                  {csvPreview.map((g) => (
+                    <li key={g.id} className="mb-1">
+                      {g.date.replace("T", " ")} - {g.homeTeam} vs {g.awayTeam}{" "}
+                      @ {g.location} ({g.division})
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  onClick={handleCsvImport}
+                  className="mt-2"
+                  disabled={csvPreview.length === 0}
+                >
+                  Importer ces matchs
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
