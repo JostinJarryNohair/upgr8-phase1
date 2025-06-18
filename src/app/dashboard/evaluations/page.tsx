@@ -23,6 +23,7 @@ interface PlayerEvaluation {
   date: Date;
   evaluationContext: string; // 'game', 'camp', 'training', or 'other'
   evaluationTargetId: string; // id of the game, camp, or training
+  customCriteria?: { name: string; score: number }[];
 }
 
 // Mock data
@@ -415,13 +416,33 @@ const mockTrainings = [
   { id: "training2", label: "Entraînement du 2024-02-12" },
 ];
 
+// Define the type for newEvaluation state
+interface NewEvaluationState {
+  playerName: string;
+  playerNumber: string;
+  position: string;
+  skills: {
+    skating: number;
+    shooting: number;
+    passing: number;
+    defense: number;
+    gameIQ: number;
+    attitude: number;
+  };
+  comments: string;
+  evaluatedBy: string;
+  evaluationContext: string;
+  evaluationTargetId: string;
+  customCriteria: { name: string; score: number }[];
+}
+
 export default function EvaluationsPage() {
   const [selectedPlayer, setSelectedPlayer] =
     React.useState<PlayerEvaluation | null>(null);
   const [showNewEvalModal, setShowNewEvalModal] = React.useState(false);
   const [evaluations, setEvaluations] =
     React.useState<PlayerEvaluation[]>(mockEvaluations);
-  const [newEvaluation, setNewEvaluation] = React.useState({
+  const [newEvaluation, setNewEvaluation] = React.useState<NewEvaluationState>({
     playerName: "",
     playerNumber: "",
     position: "",
@@ -437,6 +458,7 @@ export default function EvaluationsPage() {
     evaluatedBy: "Coach Martin",
     evaluationContext: "game",
     evaluationTargetId: "",
+    customCriteria: [],
   });
   const [selectedCategory, setSelectedCategory] = React.useState("U15");
   const [selectedPlayerId, setSelectedPlayerId] = React.useState("");
@@ -480,6 +502,33 @@ export default function EvaluationsPage() {
     (player) => player.category === selectedCategory
   );
 
+  const handleAddCustomCriterion = () => {
+    setNewEvaluation((prev) => ({
+      ...prev,
+      customCriteria: [...(prev.customCriteria || []), { name: "", score: 5 }],
+    }));
+  };
+
+  const handleRemoveCustomCriterion = (idx: number) => {
+    setNewEvaluation((prev) => ({
+      ...prev,
+      customCriteria: prev.customCriteria.filter((_, i) => i !== idx),
+    }));
+  };
+
+  const handleCustomCriterionChange = (
+    idx: number,
+    field: "name" | "score",
+    value: string | number
+  ) => {
+    setNewEvaluation((prev) => ({
+      ...prev,
+      customCriteria: prev.customCriteria.map((c, i) =>
+        i === idx ? { ...c, [field]: value } : c
+      ),
+    }));
+  };
+
   const handleNewEvaluation = () => {
     if (!selectedPlayerId) return;
     if (!newEvaluation.evaluationTargetId) return;
@@ -496,6 +545,9 @@ export default function EvaluationsPage() {
       date: new Date(),
       evaluationContext: newEvaluation.evaluationContext,
       evaluationTargetId: newEvaluation.evaluationTargetId,
+      customCriteria: newEvaluation.customCriteria?.filter(
+        (c) => c.name.trim() !== ""
+      ),
     };
 
     // Ajouter à la liste des évaluations
@@ -521,6 +573,7 @@ export default function EvaluationsPage() {
       evaluatedBy: "Coach Martin",
       evaluationContext: "game",
       evaluationTargetId: "",
+      customCriteria: [],
     });
     setSelectedCategory("U15");
     setSelectedPlayerId("");
@@ -810,6 +863,31 @@ export default function EvaluationsPage() {
                   </div>
                 </div>
 
+                {/* Critères personnalisés */}
+                {selectedPlayer.customCriteria &&
+                  selectedPlayer.customCriteria.length > 0 && (
+                    <div>
+                      <h4 className="text-base font-medium text-gray-900 mb-3 mt-6">
+                        Critères personnalisés
+                      </h4>
+                      <ul className="space-y-2">
+                        {selectedPlayer.customCriteria.map((c, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-center justify-between"
+                          >
+                            <span className="text-sm text-gray-700">
+                              {c.name}
+                            </span>
+                            <span className="text-sm font-medium text-blue-700">
+                              {c.score}/10
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
                 {/* Actions */}
                 <div className="flex gap-2 pt-3">
                   <Button
@@ -1043,6 +1121,58 @@ export default function EvaluationsPage() {
                     )
                   )}
                 </div>
+              </div>
+
+              {/* Critères personnalisés */}
+              <div>
+                <h3 className="text-base font-medium text-gray-900 mb-3 mt-6">
+                  Critères personnalisés
+                </h3>
+                {(newEvaluation.customCriteria || []).map((criterion, idx) => (
+                  <div key={idx} className="flex items-center gap-3 mb-2">
+                    <input
+                      type="text"
+                      value={criterion.name}
+                      onChange={(e) =>
+                        handleCustomCriterionChange(idx, "name", e.target.value)
+                      }
+                      placeholder="Nom du critère"
+                      className="flex-1 p-2 border border-gray-300 rounded text-sm"
+                    />
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={criterion.score}
+                      onChange={(e) =>
+                        handleCustomCriterionChange(
+                          idx,
+                          "score",
+                          parseInt(e.target.value)
+                        )
+                      }
+                      className="w-32"
+                    />
+                    <span className="w-8 text-center">
+                      {criterion.score}/10
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveCustomCriterion(idx)}
+                      className="text-red-500 hover:text-red-700 text-lg px-2"
+                      title="Supprimer ce critère"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleAddCustomCriterion}
+                  className="mt-2 px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm"
+                >
+                  + Ajouter un critère personnalisé
+                </button>
               </div>
 
               {/* Commentaires */}
